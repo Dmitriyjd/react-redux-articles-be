@@ -106,7 +106,7 @@ async function getArticlesByQuery(req,res){
 }
 
 async function getArticleById(req,res){
-	if(!req.params.id){
+	if(!req.params._id){
 		res
 			.status(422)
 			.json({
@@ -117,7 +117,7 @@ async function getArticleById(req,res){
 			})
 	}
 	try{
-		const userData = await Article.findArticleById(req.params.id);
+		const userData = await Article.findArticleById(req.params._id);
 		res
 			.status(200)
 			.json(userData)
@@ -133,4 +133,33 @@ async function getArticleById(req,res){
 	}
 }
 
-module.exports = { createArticle, updateArticle, getArticlesByQuery, getArticleById };
+async function deleteArticleById(req,res){
+	if(!req.params._id){
+		res
+			.status(422)
+			.json({
+				"errors":[{
+					"field":"Id",
+					"error":"Id is Required"
+				}]
+			});
+		return
+	}
+	try {
+		const userData = await Article.deleteArticleById(req.params._id);
+		res
+			.status(200)
+			.json({ message: "deleted" })
+	} catch (error) {
+		res
+			.status(404)
+			.json({
+				"errors": [{
+					"field": "Id",
+					"error": "Not Found"
+				}]
+			})
+	}
+}
+
+module.exports = { createArticle, updateArticle, getArticlesByQuery, getArticleById, deleteArticleById };
