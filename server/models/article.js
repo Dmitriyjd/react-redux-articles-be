@@ -53,4 +53,12 @@ async function updateArticleById(id, newData) {
 	}
 }
 
-module.exports = { createArticle, findArticleById, updateArticleById, findArticles };
+async function deleteArticleById(id) {
+	try {
+		return await Article.findOneAndDelete({_id: id})
+	} catch (error) {
+		return error
+	}
+}
+
+module.exports = { createArticle, findArticleById, updateArticleById, findArticles, deleteArticleById };
