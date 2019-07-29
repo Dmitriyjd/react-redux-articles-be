@@ -10,6 +10,7 @@ async function createArticle(req,res){
           "error": "Title is Required",
         }]
       })
+		return
   }
   if(!req.body.body){
     res
@@ -20,6 +21,7 @@ async function createArticle(req,res){
           "error": "Body is Required",
         }]
       })
+    return
   }
   try{
     const userData = await Article.createArticle({
@@ -38,6 +40,8 @@ async function createArticle(req,res){
 }
 
 async function updateArticle(req,res){
+	console.log(req.params.id)
+	console.log(req.body)
 	if(!req.body.title){
 		res
 			.status(422)
@@ -47,6 +51,7 @@ async function updateArticle(req,res){
 					"error": "Title is Required",
 				}]
 			})
+    return
 	}
 	if(!req.body.body){
 		res
@@ -57,6 +62,7 @@ async function updateArticle(req,res){
 					"error": "Body is Required",
 				}]
 			})
+    return
 	}
 	try{
 		const existingData = await Article.findArticleById(req.params.id);
