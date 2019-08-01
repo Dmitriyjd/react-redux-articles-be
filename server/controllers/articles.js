@@ -84,20 +84,13 @@ async function updateArticle(req,res){
 
 async function getArticlesByQuery(req,res){
   try {
-    const foundArticlesCount = (await Article.findArticles()).length;
     let page = req.query.page;
     let limit = req.query.limit;
     if(req.query.limit > 10) limit = 10;
     const data = await Article.findArticles(+page, +limit);
-    const pagination = {
-      count: foundArticlesCount,
-      pageCount: Math.ceil(foundArticlesCount/limit),
-      page: page,
-      limit: limit,
-    };
     res
       .status(200)
-      .json({ data, pagination })
+      .json(data)
   } catch (error) {
   	res
 			.status(404)
@@ -146,7 +139,7 @@ async function deleteArticleById(req,res){
 		return
 	}
 	try {
-		const userData = await Article.deleteArticleById(req.params._id);
+		await Article.deleteArticleById(req.params._id);
 		res
 			.status(200)
 			.json({ message: "deleted" })
